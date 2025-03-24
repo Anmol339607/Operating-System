@@ -82,3 +82,32 @@ void sjf() {
         } else {
             currentTime++;
         }
+    }
+    displayResults();
+    calculateAvgTimes();
+}
+
+void roundRobin() {
+    cout << "Enter Time Quantum: ";
+    cin >> quantum;
+
+    queue<int> q;
+    int currentTime = 0, completed = 0;
+
+    for (int i = 0; i < n; i++)
+        if (proc[i].arrival == 0)
+            q.push(i);
+
+    while (!q.empty()) {
+        int i = q.front();
+        q.pop();
+
+        if (proc[i].remaining > quantum) {
+            proc[i].remaining -= quantum;
+            currentTime += quantum;
+        } else {
+            currentTime += proc[i].remaining;
+            proc[i].remaining = 0;
+            proc[i].completion = currentTime;
+            completed++;
+        }
